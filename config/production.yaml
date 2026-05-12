@@ -1,0 +1,10 @@
+broker:
+  uri: amqp://admin:admin@rabbitmq:5672
+  exchanges:
+    - name: topic.producer.send-message.consumer
+      type: topic
+  defaultPublishOptions:
+    persistent: true
+  retry:
+    maxAttempts: 5
+    delayMs: 1000

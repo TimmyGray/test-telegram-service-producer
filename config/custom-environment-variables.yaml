@@ -1,0 +1,2 @@
+broker:
+  uri: RABBITMQ_URI
