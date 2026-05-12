@@ -11,7 +11,7 @@ export interface BrokerPublishResult {
 export abstract class IBrokerService {
     abstract publish(
         exchange: string,
-        message: string,
+        message: unknown,
         routingKey?: string,
     ): Promise<BrokerPublishResult>;
 }

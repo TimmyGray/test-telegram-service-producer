@@ -44,7 +44,7 @@ export class BrokerService implements IBrokerService, OnModuleInit {
 
     async publish(
         exchange: string,
-        message: string,
+        message: unknown,
         routingKey = '',
     ): Promise<BrokerPublishResult> {
         const maxAttempts = this.brokerConfig.retry?.maxAttempts ?? 3;

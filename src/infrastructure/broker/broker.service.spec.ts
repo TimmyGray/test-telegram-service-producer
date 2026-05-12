@@ -10,7 +10,7 @@ describe('BrokerService', () => {
     type PublishFn = (
         exchange: string,
         routingKey: string,
-        message: string,
+        message: unknown,
     ) => Promise<boolean>;
     let publishMock: jest.Mock<PublishFn>;
     let service: BrokerService;

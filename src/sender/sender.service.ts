@@ -48,7 +48,7 @@ export class SenderService implements ISenderService {
 
     const publishResult = await this.brokerService.publish(
       EXCHANGE_NAME,
-      JSON.stringify(event),
+      event,
       ROUTING_KEY,
     );
 

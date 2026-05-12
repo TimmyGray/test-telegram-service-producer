@@ -4,9 +4,8 @@ import { SenderService } from './sender.service';
 import { BrokerConfig } from '../infrastructure/broker/broker.config';
 import { IBrokerService } from '../infrastructure/broker/broker.interface';
 import { ExchangeNotFoundError } from '../infrastructure/broker/errors';
-import type {
-    BrokerPublishResult,
-} from '../infrastructure/broker/broker.interface';
+import type { BrokerPublishResult } from '../infrastructure/broker/broker.interface';
+import type { ISenderEvent } from './sender.interface';
 
 const EXCHANGE_NAME = 'topic.producer.send-message.consumer';
 const ROUTING_KEY = 'send-message';
@@ -64,17 +63,11 @@ describe('SenderService', () => {
 
         expect(exchange).toBe(EXCHANGE_NAME);
         expect(routingKey).toBe(ROUTING_KEY);
-        expect(typeof payload).toBe('string');
 
-        const decodedPayload = JSON.parse(payload as string) as {
-            eventId: string;
-            occurredAt: string;
-            payload: { userId: number; text: string };
-        };
-
-        expect(decodedPayload.eventId).toBe(result.eventId);
-        expect(new Date(decodedPayload.occurredAt).toString()).not.toBe('Invalid Date');
-        expect(decodedPayload.payload).toEqual(message);
+        const event = payload as ISenderEvent;
+        expect(event.eventId).toBe(result.eventId);
+        expect(new Date(event.occurredAt).toString()).not.toBe('Invalid Date');
+        expect(event.payload).toEqual(message);
     });
 
     it('should throw ExchangeNotFoundError when exchange is missing in config', async () => {
