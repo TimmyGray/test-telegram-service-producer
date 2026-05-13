@@ -18,10 +18,10 @@ services:
   producer:
     hostname: producer
     build:
-      context: .
+      context: ./test-telegram-service-producer
       dockerfile: Dockerfile
       args:
-        RABBITMQ_URI_OVERRIDE: ${RABBITMQ_URI:-}
+        RABBITMQ_URI_OVERRIDE: ${RABBITMQ_URI:-amqp://admin:admin@rabbitmq:5672}
     depends_on:
       rabbitmq:
         condition: service_healthy
@@ -30,6 +30,25 @@ services:
       PORT: 3000
     ports:
       - "3000:3000"
+    restart: unless-stopped
+
+  consumer:
+    hostname: consumer
+    build:
+      context: ./test-telegram-service-consumer
+      dockerfile: Dockerfile
+      args:
+        RABBITMQ_URI_OVERRIDE: ${RABBITMQ_URI:-amqp://admin:admin@rabbitmq:5672}
+        TELEGRAM_TOKEN_OVERRIDE: ${TELEGRAM_TOKEN:-}
+        TELEGRAM_CHAT_ID_OVERRIDE: ${TELEGRAM_CHAT_ID:-}
+    depends_on:
+      rabbitmq:
+        condition: service_healthy
+    environment:
+      NODE_ENV: production
+      PORT: 3001
+    ports:
+      - "3001:3001"
     restart: unless-stopped
 
 volumes:

@@ -197,6 +197,16 @@ docker compose ps
 docker compose logs --tail 100 producer
 ```
 
+### Unified stack with consumer
+
+When producer and consumer repositories are in the same parent directory, use the parent-level compose file to run both services with one RabbitMQ instance:
+
+```bash
+docker compose -f docker-compose.telegram-services.yml up --build -d
+```
+
+This avoids duplicate RabbitMQ instances and local port conflicts.
+
 ## Build-Time RabbitMQ URI Override
 
 By default, URI is taken from `config/production.yaml`.
